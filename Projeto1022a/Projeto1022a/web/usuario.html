@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastrar Usuários</title>
+    <style>
+        body {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .formulario {
+          width: 50vw;
+          padding: 100px;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          -webkit-box-shadow: 0px 1px 10px -2px rgba(0, 0, 0, 0.75);
+          -moz-box-shadow: 0px 1px 10px -2px rgba(0, 0, 0, 0.75);
+          box-shadow: 0px 1px 10px -2px rgba(0, 0, 0, 0.75);
+        }
+        .conteudo-input {
+          display: flex;
+          flex-direction: column;
+        }
+        input {
+          padding: 20px;
+        }
+      </style>
+  </head>
+  <body>
+    <a href="index.html">Listar Usuários</a>
+    <h1>Cadastrar Usuários</h1>
+    <div class="formulario">
+      <div class="conteudo-input">
+        <label for="id">Id</label>
+        <input id="id" type="number" placeholder="Id" />
+      </div>
+
+      <div class="conteudo-input">
+        <label for="nome">Nome</label>
+        <input id="nome" type="text" placeholder="Nome" />
+      </div>
+
+      <div class="conteudo-input">
+        <label for="idade">Idade</label>
+        <input id="idade" type="number" placeholder="Idade" />
+      </div>
+
+      <div class="conteudo-input">
+        <label for="cpf">CPF</label>
+        <input id="cpf" type="text" placeholder="CPF" />
+      </div>
+
+      <div class="conteudo-input">
+        <label for="rg">RG</label>
+        <input id="rg" type="text" placeholder="RG" />
+      </div>
+
+      <div class="conteudo-input">
+        <label for="endereco">Endereço</label>
+        <input id="endereco" type="text" placeholder="Endereço" />
+      </div>
+
+      <div class="conteudo-input">
+        <label for="estado_civil">Estado Civil</label>
+        <select id="estado_civil">
+          <option value="Solteiro">Solteiro(a)</option>
+          <option value="Casado">Casado(a)</option>
+        </select>
+      </div>
+
+      <div class="conteudo-input">
+        <input id="botao2" type="submit" value="Cadastrar" />
+      </div>
+    </div>
+
+    <script>
+      const btn_cadastro = document.getElementById("botao2");
+      btn_cadastro.addEventListener("click", () => {
+        const id = document.getElementById("id").value;
+        const nome = document.getElementById("nome").value;
+        const idade = document.getElementById("idade").value;
+        const cpf = document.getElementById("cpf").value;
+        const rg = document.getElementById("rg").value;
+        const endereco = document.getElementById("endereco").value;
+        const estado_civil = document.getElementById("estado_civil").value;
+        const usuario = {
+          id: id,
+          nome: nome,
+          idade: idade,
+          cpf: cpf,
+          rg: rg,
+          endereco: endereco,
+          estado_civil: estado_civil
+        }
+
+        const resposta = fetch("http://localhost:8000/usuarios", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(usuario),
+        });
+        resposta
+          .then((res) => {
+            if (res.status === 201) {
+              alert("Deu certo cadastrar no banco");
+            } else {
+              res.text().then((res) => {
+                alert(res);
+              });
+            }
+          })
+          .catch(() => {
+            alert("Servidor não respondeu");
+          });
+      });
+    </script>
+  </body>
+</html>

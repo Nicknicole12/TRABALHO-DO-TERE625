@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Produtos e Usuarios</title>
+    <style>
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        .imagem-celular {
+            width: 100px;
+            height: auto;
+        }
+
+    </style>
+</head>
+<body>
+    <a href="cadastro.html">Cadastrar Produtos</a>
+    <a href="usuario.html">Cadastrar usuario</a>
+    <h1>Listar Produtos</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Preço</th>
+                <th>Imagem</th>
+            </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+        <table>
+
+        <h2>Lista de Usuários</h>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Idade</th>
+                    <th>cpf</th>
+                    <th>rg</th>
+                    <th>Endereço</th>
+                    <th>Estado Civil</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-usuarios"></tbody>
+        </table>
+    <script>
+        
+        fetch("http://localhost:8000/produtos")
+        .then((dados)=>{
+            dados.json()
+            .then((dadosJson)=>{
+                const tbody = document.getElementById("tbody")
+                for(let produto of dadosJson){
+                    let tr = document.createElement("tr")
+                    tr.innerHTML=
+                    `
+                        <td>${produto.id}</td>
+                        <td>${produto.nome}</td>
+                        <td>${produto.descricao}</td>
+                        <td>${produto.preco}</td>
+                        <td>
+                            <img class="imagem-celular" src="${produto.imagem}"/>
+                        </td>
+                    `
+                    tbody.appendChild(tr)
+                }
+            })
+            .catch((erro)=>alert("Erro no JSON"))
+        })
+        .catch((erro)=>alert("LIGUE O SERVIDOR COM NPM RUN DEV"))
+
+//Para usuarios 
+fetch("http://localhost:8000/usuarios")
+        .then((dados)=>{
+            dados.json()
+            .then((dadosJson)=>{
+                const tbody = document.getElementById("tbody-usuarios")
+                for(let usuario of dadosJson){
+                    let tr = document.createElement("tr")
+                    tr.innerHTML=
+                    `
+                        <td>${usuario.id}</td>
+                        <td>${usuario.nome}</td>
+                        <td>${usuario.idade}</td>
+                        <td>${usuario.cpf}</td>
+                        <td>${usuario.rg}</td>
+                        <td>${usuario.endereco}</td>
+                        <td>${usuario.estado_civil}</td>
+                    `
+                    tbody.appendChild(tr)
+                }
+            })
+            .catch((erro)=>alert("Erro no JSON"))
+        })
+        .catch((erro)=>alert("LIGUE O SERVIDOR COM NPM RUN DEV"))
+
+    </script>
+</body>
+</html>

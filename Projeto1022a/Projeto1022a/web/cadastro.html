@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastrar Produtos</title>
+    <style>
+        body {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .formulario {
+          width: 50vw;
+          padding: 100px;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          -webkit-box-shadow: 0px 1px 10px -2px rgba(0, 0, 0, 0.75);
+          -moz-box-shadow: 0px 1px 10px -2px rgba(0, 0, 0, 0.75);
+          box-shadow: 0px 1px 10px -2px rgba(0, 0, 0, 0.75);
+        }
+        .conteudo-input {
+          display: flex;
+          flex-direction: column;
+        }
+        input {
+          padding: 20px;
+        }
+      </style>
+  </head>
+  <body>
+    <a href="index.html">Listar Produtos</a>
+    <h1>Cadastrar Produtos</h1>
+    <div class="formulario">
+      <div class="conteudo-input">
+        <label for="Id">Id</label>
+        <input id="id" type="text" placeholder="Id" />
+      </div>
+
+      <div class="conteudo-input">
+        <label for="Nome">Nome</label>
+        <input id="nome" type="text" placeholder="Nome" />
+      </div>
+
+      <div class="conteudo-input">
+        <label for="Descricao">Descrição</label>
+        <input id="descricao" type="text" placeholder="Descrição" />
+      </div>
+
+      <div class="conteudo-input">
+        <label for="Preco">Preço</label>
+        <input id="preco" type="number" placeholder="Preço" />
+      </div>
+
+      <div class="conteudo-input">
+        <label for="URL">URL Imagem</label>
+        <input id="url" type="text" placeholder="URL Imagem" />
+      </div>
+      <div class="conteudo-input">
+        <input id="botao" type="submit" value="Cadastrar" />
+      </div>
+    </div>
+
+    <script>
+      const btn_cadastro = document.getElementById("botao");
+      btn_cadastro.addEventListener("click", () => {
+        const id = document.getElementById("id").value
+        const nome = document.getElementById("nome").value
+        const descricao = document.getElementById("descricao").value
+        const preco = document.getElementById("preco").value
+        const url = document.getElementById("url").value
+        const produto = {
+          id: id,
+          nome: nome,
+          descricao: descricao,
+          preco: preco,
+          imagem:url
+        };
+        const resposta = fetch("http://localhost:8000/produtos", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(produto),
+        });
+        resposta
+          .then((res) => {
+            if (res.status === 201) {
+              alert("Deu certo cadastrar no banco");
+            } else {
+              res.text().then((res) => {
+                alert(res);
+              });
+            }
+          })
+          .catch(() => {
+            alert("Servidor não respondeu");
+          });
+      });
+    </script>
+  </body>
+</html>
